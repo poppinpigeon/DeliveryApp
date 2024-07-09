@@ -177,13 +177,16 @@ class CafeMenuApp:
             "total": total_price
         }
         
-        messagebox.showinfo("Order Confirmed", f"Your order has been confirmed!")
-        # Save user_info to firebase
-        manageorders.addOrder(user_info)
-        
-        self.cart.clear()
-        self.update_cart()
-        user_info_window.destroy()
+        if (not user_info["name"]) or (not user_info["address"]) or (not user_info["phone"]):
+            messagebox.showinfo("Incomplete Information", f"Please enter all information.")
+        else:
+            messagebox.showinfo("Order Confirmed", f"Your order has been confirmed!")
+            # Save user_info to firebase
+            manageorders.addOrder(user_info)
+            
+            self.cart.clear()
+            self.update_cart()
+            user_info_window.destroy()
         
     def show_menu(self):
         self.root.mainloop()

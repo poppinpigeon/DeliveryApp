@@ -1,6 +1,7 @@
 import tkinter as tk
 import menu
-import managerlogin
+import manager
+from tkinter import messagebox
     
 def welcome_page():
     root = tk.Tk()
@@ -36,7 +37,7 @@ def welcome_page():
     menu_button = tk.Button(root, text="Go to Menu", font=("Helvetica", 24), command=lambda:show_menu(root))
     menu_button.place(relx=0.5, rely=0.5, anchor="center")
 
-    manager_button = tk.Button(root, text="Manager Login", font=("Helvetica", 16), command=lambda:open_managerlogin_page(root))
+    manager_button = tk.Button(root, text="Manager Login", font=("Helvetica", 16), command=lambda:open_managerlogin(root))
     manager_button.place(relx=0.5, rely=0.7, anchor="center")
 
     root.mainloop()
@@ -47,10 +48,39 @@ def show_menu(root):
     app = menu.CafeMenuApp()
     app.show_menu()
 
-def open_managerlogin_page(root):
+# Create a new top-level window for manager login
+def open_managerlogin(root):
+    manager_login_window = tk.Toplevel(root)
+    manager_login_window.title("Manager Login")
+    
+    username_label = tk.Label(manager_login_window, text="Username:")
+    username_label.pack()
+    username_entry = tk.Entry(manager_login_window)
+    username_entry.pack()
+
+    password_label = tk.Label(manager_login_window, text="Password:")
+    password_label.pack()
+    password_entry = tk.Entry(manager_login_window, show="*")
+    password_entry.pack()
+
+    login_button = tk.Button(manager_login_window, text="Login", command=lambda:validate_login(root, username_entry, password_entry))
+    login_button.pack()
+
+def validate_login(root, username_entry, password_entry):
+    username = username_entry.get()
+    password = password_entry.get()
+
+    # Using hardcoded credentials
+    if username == "admin" and password == "password":
+        messagebox.showinfo("Login", "Login Successful!")
+        open_manager_page(root)
+    else:
+        messagebox.showerror("Login", "Invalid username or password")
+    
+def open_manager_page(root):
     root.destroy()  # Close the login window
-    app = managerlogin.ManagerLoginApp()
-    app.show_login()
+    app = manager.OrderManagerApp()
+    app.show_manager()
     
 if __name__ == "__main__":
     welcome_page()
