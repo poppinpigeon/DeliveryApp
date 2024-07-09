@@ -20,7 +20,6 @@ class CafeMenuApp:
         else:
             self.root = master
         
-        #self.master = master
         self.root.title("Cafe Menu")
 
         # Create main frame that will hold menu and cart
@@ -74,6 +73,7 @@ class CafeMenuApp:
         self.total_price_label = tk.Label(self.cart_frame, text="Total: 0 Yen")
         self.total_price_label.pack()
 
+        # Buttons for deleting one item, clearing cart, checkout, and going back to the welcome page
         self.delete_button = tk.Button(self.cart_frame, text="Delete Selected", command=self.delete_from_cart)
         self.delete_button.pack()
 
@@ -83,12 +83,12 @@ class CafeMenuApp:
         self.checkout_button = tk.Button(self.cart_frame, text="Checkout", command=self.open_order_details)
         self.checkout_button.pack()
         
-        # in progress!!
         self.back_button = tk.Button(self.cart_frame, text="Back to Main", command=self.back_to_main)
         self.back_button.pack()
 
         self.update_cart()
 
+    # Builds the menu interface
     def build_menu(self, parent, items):
         for item in items:
             item_text = f"{item.name} - ¥{item.price}"
@@ -99,24 +99,29 @@ class CafeMenuApp:
             add_button = tk.Button(parent, text="Add", command=lambda i=item: self.add_to_cart(i))
             add_button.pack(side="top")
     
+    # Connects to the welcome page
     def back_to_main(self):
         self.root.destroy()
         welcome.welcome_page()
 
+    # Adds an item to the cart
     def add_to_cart(self, item):
         self.cart.append(item)
         self.update_cart()
 
+    # Deletes an item from the cart
     def delete_from_cart(self):
         if self.cart_listbox.curselection():
             index = self.cart_listbox.curselection()[0]
             self.cart.pop(index)
             self.update_cart()
 
+    # Clears the entire cart
     def clear_cart(self):
         self.cart.clear()
         self.update_cart()
 
+    # Updates items in the cart
     def update_cart(self):
         # Clear the current cart display
         self.cart_listbox.delete(0, tk.END)
@@ -126,12 +131,12 @@ class CafeMenuApp:
             total_price += item.price
         self.total_price_label.config(text=f"Total: ¥{total_price}")
 
+    # Create a new top-level window for order details
     def open_order_details(self):
         if not self.cart:
             messagebox.showinfo("Empty Cart", "Please add items to your cart before checking out.")
             return
         
-        # Create a new top-level window for order details - in progress!!
         order_details_window = tk.Toplevel(self.root)
         order_details_window.title("Order Details")
         order_details_list = tk.Listbox(order_details_window)
@@ -147,6 +152,7 @@ class CafeMenuApp:
         proceed_button = tk.Button(order_details_window, text="Proceed to User Info", command=lambda: self.open_user_info(order_details_window, total_price))
         proceed_button.pack()
 
+    # Create a new top-level window for user information
     def open_user_info(self, order_details_window, total_price):
         order_details_window.destroy()
         
@@ -168,6 +174,7 @@ class CafeMenuApp:
         confirm_button = tk.Button(user_info_window, text="Confirm", command=lambda: self.confirm_order(user_info_window, name_entry.get(), address_entry.get(), phone_entry.get(), total_price))
         confirm_button.pack(pady=5)
     
+    # Checks user information input and sends info to the database if all is completed
     def confirm_order(self, user_info_window, name, address, phone, total_price):
         user_info = {
             "name": name,

@@ -13,7 +13,7 @@ class OrderManagerApp:
         self.root.title("Manage Orders")
         self.root.geometry("800x600")
         
-        # Set scrollbar - in progress!!
+        # Set scrollbar
         scrollbar = tk.Scrollbar(self.root)
         scrollbar.pack(side = tk.RIGHT, fill = tk.Y)
         
@@ -37,6 +37,7 @@ class OrderManagerApp:
         # Load initial orders
         self.load_orders()
 
+    # Loads user information and order details from Firebase
     def load_orders(self):
         self.orders_listbox.delete(0, tk.END)
         orders = manageorders.db.child("Orders").get()
@@ -48,6 +49,7 @@ class OrderManagerApp:
                 for line in lines:
                     self.orders_listbox.insert(tk.END, line)
     
+    # Deletes selected order
     def delete_order(self):
         selected_order = self.orders_listbox.curselection()
         if (not selected_order) or (not (selected_order[0]%6 == 0)):
@@ -65,6 +67,7 @@ class OrderManagerApp:
         # Update orders listbox
         self.load_orders()
     
+    # Connects to the welcome page
     def back_to_main(self):
         self.root.destroy()
         welcome.welcome_page()

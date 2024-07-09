@@ -53,30 +53,35 @@ def open_managerlogin(root):
     manager_login_window = tk.Toplevel(root)
     manager_login_window.title("Manager Login")
     
+    # Username input
     username_label = tk.Label(manager_login_window, text="Username:")
     username_label.pack()
     username_entry = tk.Entry(manager_login_window)
     username_entry.pack()
 
+    # Password input
     password_label = tk.Label(manager_login_window, text="Password:")
     password_label.pack()
     password_entry = tk.Entry(manager_login_window, show="*")
     password_entry.pack()
 
+    # Login button
     login_button = tk.Button(manager_login_window, text="Login", command=lambda:validate_login(root, username_entry, password_entry))
     login_button.pack()
 
+# Validates the username and password from the manager login pop-up
 def validate_login(root, username_entry, password_entry):
     username = username_entry.get()
     password = password_entry.get()
 
-    # Using hardcoded credentials
+    # Uses hardcoded credentials for now
     if username == "admin" and password == "password":
         messagebox.showinfo("Login", "Login Successful!")
         open_manager_page(root)
     else:
         messagebox.showerror("Login", "Invalid username or password")
-    
+
+# Connects to the manager page
 def open_manager_page(root):
     root.destroy()  # Close the login window
     app = manager.OrderManagerApp()
